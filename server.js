@@ -20,16 +20,16 @@ router
   });
 
 const auth = async (ctx, next) => {
-  const { cookie } = ctx.headers;
+  const cookie = ctx.cookies.get('marvel-universe');
 
-  if (!cookie || cookie !== 'marvel-universe') {
+  if (!cookie) {
     ctx.status = 401;
     ctx.body = Boom.unauthorized('Cookie not found');
     return;
   }
 
   try {
-    jwt.verify(cookie['marvel-universe'], 'secretsauce');
+    jwt.verify(cookie, 'secretsauce');
   } catch (e) {
     ctx.status = 401;
     ctx.body = Boom.unauthorized(e.message);
@@ -59,6 +59,7 @@ router
     if (!isValid) {
       ctx.status = 401;
       ctx.body = Boom.unauthorized('Invalid password');
+      return;
     }
 
     const token = jwt.sign({ id: user.id, username: user.username }, 'secretsauce');
@@ -68,12 +69,11 @@ router
     ctx.body = {
       id: user.id,
       username: user.username,
-      token,
     };
   });
 
 router
-  .get('/users/:id', async ctx => {
+  .get('/users/:id', auth, async ctx => {
     const { id } = ctx.params;
 
     const { rowCount, rows: [user] } = await pool.query({
