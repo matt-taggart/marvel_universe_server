@@ -29,7 +29,7 @@ const auth = async (ctx, next) => {
   }
 
   try {
-    jwt.verify(cookie, 'secretsauce');
+    jwt.verify(cookie['marvel-universe'], 'secretsauce');
   } catch (e) {
     ctx.status = 401;
     ctx.body = Boom.unauthorized(e.message);
@@ -71,7 +71,25 @@ router
       token,
     };
   });
-  
+
+router
+  .get('/users/:id', async ctx => {
+    const { id } = ctx.params;
+
+    const { rowCount, rows: [user] } = await pool.query({
+      text: 'SELECT id, username FROM users WHERE id = ($1)',
+      values: [id],
+    });
+
+    if (!rowCount) {
+      ctx.status = 400;
+      ctx.body = Boom.badRequest('User does not exist');
+      return;
+    }
+
+    ctx.body = { user };
+  });
+
 router
   .post('/users', async ctx => {
     const { username, password } = ctx.request.body;
