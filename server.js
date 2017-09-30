@@ -6,6 +6,7 @@ const Boom = require('boom');
 const bodyParser = require('koa-bodyparser');
 const cors = require('kcors');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 
 const app = new Koa();
@@ -18,6 +19,26 @@ router
     ctx.response.status = 200;
   });
 
+const auth = async (ctx, next) => {
+  const { cookie } = ctx.headers;
+
+  if (!cookie || cookie !== 'marvel-universe') {
+    ctx.status = 401;
+    ctx.body = Boom.unauthorized('Cookie not found');
+    return;
+  }
+
+  try {
+    jwt.verify(cookie, 'secretsauce');
+  } catch (e) {
+    ctx.status = 401;
+    ctx.body = Boom.unauthorized(e.message);
+    return;
+  }
+
+  await next();
+};
+
 router
   .post('/login', async ctx => {
     const { username, password } = ctx.request.body;
@@ -29,7 +50,8 @@ router
 
     if (!rowCount) {
       ctx.status = 400;
-      ctx.body = Boom.badRequest('Username does not exist');
+      ctx.body = Boom.badRequest('Invalid username');
+      return;
     }
 
     const isValid = await bcrypt.compare(password, user.password);
@@ -39,12 +61,17 @@ router
       ctx.body = Boom.unauthorized('Invalid password');
     }
 
+    const token = jwt.sign({ id: user.id, username: user.username }, 'secretsauce');
+
+    ctx.cookies.set('marvel-universe', token);
+
     ctx.body = {
       id: user.id,
       username: user.username,
+      token,
     };
   });
-
+  
 router
   .post('/users', async ctx => {
     const { username, password } = ctx.request.body;
