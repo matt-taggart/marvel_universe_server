@@ -87,12 +87,27 @@ router
       return;
     }
 
-    ctx.body = { user };
+    ctx.body = {
+      id: user.id,
+      password: user.username,
+    };
   });
 
 router
   .post('/users', async ctx => {
     const { username, password } = ctx.request.body;
+
+    const { rows: [result] } = await pool.query({
+      text: 'SELECT COUNT(username) FROM users WHERE username = ($1)',
+      values: [username],
+    });
+
+    if (+result.count) {
+      ctx.status = 400;
+      ctx.body = Boom.badRequest('Username already exists');
+      return;
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const { rowCount, rows: [user] } = await pool.query({
