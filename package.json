@@ -7,6 +7,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "bcrypt": "^1.0.3",
     "boom": "^6.0.0",
     "dotenv": "^4.0.0",

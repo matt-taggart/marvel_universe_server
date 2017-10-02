@@ -6,13 +6,20 @@ const Boom = require('boom');
 const bodyParser = require('koa-bodyparser');
 const cors = require('kcors');
 const bcrypt = require('bcrypt');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const { createHash } = require('crypto');
 const { Pool } = require('pg');
 
 const app = new Koa();
 const router = new Router();
 const pool = new Pool();
-const { PORT = 3000 } = process.env;
+
+const {
+  PORT = 3000,
+  PUBLIC_KEY,
+  PRIVATE_KEY,
+} = process.env;
 
 router
   .get('/keepAlive', async ctx => {
@@ -125,6 +132,29 @@ router
       id: user.id,
       username: user.username,
     };
+  });
+
+router
+  .get('/characters', async ctx => {
+    const str = Date.now() + PRIVATE_KEY + PUBLIC_KEY;
+    const md5 = createHash('md5');
+    const hash = md5.update(str).digest('hex');
+
+    const params = {
+      ts: Date.now(),
+      apikey: PUBLIC_KEY,
+      hash,
+    };
+
+    const response = await axios.get('http://gateway.marvel.com/v1/public/characters', { params });
+
+    if (response.status !== 200) {
+      ctx.status = 503;
+      ctx.body = Boom.serverUnavailable('Server is unvailable at this time.  Please try again.');
+      return;
+    }
+
+    ctx.body = { data: response.data.data.results };
   });
 
 app
