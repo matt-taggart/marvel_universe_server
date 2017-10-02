@@ -30,17 +30,13 @@ const auth = async (ctx, next) => {
   const cookie = ctx.cookies.get('marvel-universe');
 
   if (!cookie) {
-    ctx.status = 401;
-    ctx.body = Boom.unauthorized('Cookie not found');
-    return;
+    ctx.throw(401, 'Cookie not found');
   }
 
   try {
     jwt.verify(cookie, 'secretsauce');
   } catch (e) {
-    ctx.status = 401;
-    ctx.body = Boom.unauthorized(e.message);
-    return;
+    ctx.throw(401, e.message);
   }
 
   await next();
@@ -56,17 +52,13 @@ router
     });
 
     if (!rowCount) {
-      ctx.status = 400;
-      ctx.body = Boom.badRequest('Invalid username');
-      return;
+      ctx.throw(400, 'Invalid username');
     }
 
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      ctx.status = 401;
-      ctx.body = Boom.unauthorized('Invalid password');
-      return;
+      ctx.throw(401, 'Invalid password');
     }
 
     const token = jwt.sign({ id: user.id, username: user.username }, 'secretsauce');
@@ -89,9 +81,7 @@ router
     });
 
     if (!rowCount) {
-      ctx.status = 400;
-      ctx.body = Boom.badRequest('User does not exist');
-      return;
+      ctx.throw(400, 'User does not exist');
     }
 
     ctx.body = {
@@ -110,9 +100,7 @@ router
     });
 
     if (+result.count) {
-      ctx.status = 400;
-      ctx.body = Boom.badRequest('Username already exists');
-      return;
+      ctx.throw(400, 'Username already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -123,9 +111,7 @@ router
     });
 
     if (!rowCount) {
-      ctx.status = 400;
-      ctx.body = Boom.badRequest('Unable to add user');
-      return;
+      ctx.throw(400, 'Unable to add user');
     }
 
     ctx.body = {
@@ -149,15 +135,22 @@ router
     const response = await axios.get('http://gateway.marvel.com/v1/public/characters', { params });
 
     if (response.status !== 200) {
-      ctx.status = 503;
-      ctx.body = Boom.serverUnavailable('Server is unvailable at this time.  Please try again.');
-      return;
+      ctx.throw(503, 'Server is unavailable at this time. Please try again.');
     }
 
     ctx.body = { data: response.data.data.results };
   });
 
 app
+  .use(async (ctx, next) => {
+    try {
+      await next();
+    } catch (e) {
+      const statusCode = e.status || e.statusCode || 500;
+      ctx.status = statusCode;
+      ctx.body = Boom.boomify(e, { statusCode }).output.payload;
+    }
+  })
   .use(cors())
   .use(bodyParser())
   .use(router.routes())
