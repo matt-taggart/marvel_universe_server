@@ -8,18 +8,14 @@ const cors = require('kcors');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const { createHash } = require('crypto');
+const { createParams } = require('./services/utils');
 const { Pool } = require('pg');
 
 const app = new Koa();
 const router = new Router();
 const pool = new Pool();
 
-const {
-  PORT = 3000,
-  PUBLIC_KEY,
-  PRIVATE_KEY,
-} = process.env;
+const { PORT = 3000 } = process.env;
 
 router
   .get('/keepAlive', async ctx => {
@@ -122,17 +118,20 @@ router
 
 router
   .get('/characters', async ctx => {
-    const str = Date.now() + PRIVATE_KEY + PUBLIC_KEY;
-    const md5 = createHash('md5');
-    const hash = md5.update(str).digest('hex');
-
-    const params = {
-      ts: Date.now(),
-      apikey: PUBLIC_KEY,
-      hash,
-    };
+    const params = createParams();
 
     const response = await axios.get('http://gateway.marvel.com/v1/public/characters', { params });
+
+    if (response.status !== 200) {
+      ctx.throw(503, 'Server is unavailable at this time. Please try again.');
+    }
+
+    ctx.body = { data: response.data.data.results };
+  })
+  .get('/characters/:id', async ctx => {
+    const params = createParams();
+
+    const response = await axios.get(`http://gateway.marvel.com/v1/public/characters/${ctx.params.id}`, { params });
 
     if (response.status !== 200) {
       ctx.throw(503, 'Server is unavailable at this time. Please try again.');
