@@ -2,12 +2,12 @@ require('dotenv').load();
 
 const Koa = require('koa');
 const Router = require('koa-router');
-const Boom = require('boom');
 const bodyParser = require('koa-bodyparser');
 const cors = require('kcors');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const errorHandler = require('./services/errorHandler');
 const { createParams } = require('./services/utils');
 const { Pool } = require('pg');
 
@@ -141,15 +141,7 @@ router
   });
 
 app
-  .use(async (ctx, next) => {
-    try {
-      await next();
-    } catch (e) {
-      const statusCode = e.status || e.statusCode || 500;
-      ctx.status = statusCode;
-      ctx.body = Boom.boomify(e, { statusCode }).output.payload;
-    }
-  })
+  .use(errorHandler())
   .use(cors())
   .use(bodyParser())
   .use(router.routes())
