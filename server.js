@@ -7,13 +7,12 @@ const cors = require('kcors');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const db = require('./db');
 const errorHandler = require('./services/errorHandler');
 const { createParams } = require('./services/utils');
-const { Pool } = require('pg');
 
 const app = new Koa();
 const router = new Router();
-const pool = new Pool();
 
 const { PORT = 3000 } = process.env;
 
@@ -42,7 +41,7 @@ router
   .post('/login', async ctx => {
     const { username, password } = ctx.request.body;
 
-    const { rowCount, rows: [user] } = await pool.query({
+    const { rowCount, rows: [user] } = await db.query({
       text: 'SELECT * FROM users WHERE username = ($1)',
       values: [username],
     });
@@ -71,7 +70,7 @@ router
   .get('/users/:id', auth, async ctx => {
     const { id } = ctx.params;
 
-    const { rowCount, rows: [user] } = await pool.query({
+    const { rowCount, rows: [user] } = await db.query({
       text: 'SELECT id, username FROM users WHERE id = ($1)',
       values: [id],
     });
@@ -90,7 +89,7 @@ router
   .post('/users', async ctx => {
     const { username, password } = ctx.request.body;
 
-    const { rows: [result] } = await pool.query({
+    const { rows: [result] } = await db.query({
       text: 'SELECT COUNT(username) FROM users WHERE username = ($1)',
       values: [username],
     });
@@ -101,7 +100,7 @@ router
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const { rowCount, rows: [user] } = await pool.query({
+    const { rowCount, rows: [user] } = await db.query({
       text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username',
       values: [username, hashedPassword],
     });
