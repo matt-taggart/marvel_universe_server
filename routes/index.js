@@ -6,13 +6,13 @@ const userRouter = require('./users');
 
 const router = compose([
   authRouter.routes(),
-  authRouter.allowedMethods(),
+  authRouter.allowedMethods({ throw: true }),
   characterRouter.routes(),
-  characterRouter.allowedMethods(),
+  characterRouter.allowedMethods({ throw: true }),
   keepAliveRouter.routes(),
-  keepAliveRouter.allowedMethods(),
+  keepAliveRouter.allowedMethods({ throw: true }),
   userRouter.routes(),
-  userRouter.allowedMethods(),
+  userRouter.allowedMethods({ throw: true }),
 ]);
 
 
