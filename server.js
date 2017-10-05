@@ -7,7 +7,6 @@ const router = require('./routes');
 const errorHandler = require('./services/errorHandler');
 
 const { PORT = 3000 } = process.env;
-
 const app = new Koa();
 
 app
