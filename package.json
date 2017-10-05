@@ -15,6 +15,7 @@
     "kcors": "^2.2.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
+    "koa-compose": "^4.0.0",
     "koa-router": "^7.2.1",
     "pg": "^7.3.0"
   },
