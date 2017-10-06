@@ -3,6 +3,7 @@ const authRouter = require('./auth');
 const characterRouter = require('./characters');
 const keepAliveRouter = require('./keepAlive');
 const userRouter = require('./users');
+const Boom = require('boom');
 
 const router = compose([
   authRouter.routes(),

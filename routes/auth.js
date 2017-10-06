@@ -14,13 +14,13 @@ router
     });
 
     if (!rowCount) {
-      ctx.throw(400, 'Invalid username');
+      ctx.throw(401, 'Invalid username or password provided');
     }
 
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      ctx.throw(401, 'Invalid password');
+      ctx.throw(401, 'Invalid username or password provided');
     }
 
     const token = jwt.sign({ id: user.id, username: user.username }, 'secretsauce');
