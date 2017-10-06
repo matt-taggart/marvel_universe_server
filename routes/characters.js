@@ -31,7 +31,7 @@ router
     const params = createParams();
 
     const response = await axios.get(`http://gateway.marvel.com/v1/public/characters/${ctx.params.id}/comics`, { params });
-    
+
     if (response.status !== 200) {
       ctx.throw(503);
     }
@@ -42,7 +42,7 @@ router
     const params = createParams();
 
     const response = await axios.get(`http://gateway.marvel.com/v1/public/characters/${ctx.params.id}/events`, { params });
-    
+
     if (response.status !== 200) {
       ctx.throw(503);
     }
@@ -53,7 +53,7 @@ router
     const params = createParams();
 
     const response = await axios.get(`http://gateway.marvel.com/v1/public/characters/${ctx.params.id}/series`, { params });
-    
+
     if (response.status !== 200) {
       ctx.throw(503);
     }
@@ -64,7 +64,7 @@ router
     const params = createParams();
 
     const response = await axios.get(`http://gateway.marvel.com/v1/public/characters/${ctx.params.id}/stories`, { params });
-    
+
     if (response.status !== 200) {
       ctx.throw(503);
     }

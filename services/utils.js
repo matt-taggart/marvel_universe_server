@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const { PRIVATE_KEY, PUBLIC_KEY } = process.env;
 
-const generateHash = () => {
+exports.generateHash = () => {
   const str = Date.now() + PRIVATE_KEY + PUBLIC_KEY;
   const md5 = createHash('md5');
   const hash = md5.update(str).digest('hex');
@@ -11,13 +11,13 @@ const generateHash = () => {
   return hash;
 };
 
-const createParams = () => ({
+exports.createParams = () => ({
   ts: Date.now(),
   apikey: PUBLIC_KEY,
-  hash: generateHash(),
+  hash: exports.generateHash(),
 });
 
-const auth = async (ctx, next) => {
+exports.auth = async (ctx, next) => {
   const cookie = ctx.cookies.get('marvel-universe');
 
   if (!cookie) {
@@ -33,6 +33,3 @@ const auth = async (ctx, next) => {
   await next();
 };
 
-exports.generateHash = generateHash;
-exports.createParams = createParams;
-exports.auth = auth;

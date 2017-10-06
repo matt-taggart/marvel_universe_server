@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const db = require('./../db');
 
 const router = new Router();
 
@@ -31,6 +32,14 @@ router
       id: user.id,
       username: user.username,
     };
+  })
+  .delete('/logout', async ctx => {
+    if (!ctx.cookies.get('marvel-universe')) {
+      ctx.throw(400, 'User is already logged out')
+    }
+
+    ctx.cookies.set('marvel-universe', null);
+    ctx.body = { message: 'Logout successful' };
   });
 
 module.exports = router;
