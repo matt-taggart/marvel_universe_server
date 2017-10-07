@@ -1,7 +1,14 @@
 const { createHash } = require('crypto');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
-const { PRIVATE_KEY, PUBLIC_KEY } = process.env;
+const {
+  PRIVATE_KEY,
+  PUBLIC_KEY,
+  API_HOST,
+  API_VERSION,
+  API_ACCESS,
+} = process.env;
 
 exports.generateHash = () => {
   const str = Date.now() + PRIVATE_KEY + PUBLIC_KEY;
@@ -31,5 +38,12 @@ exports.auth = async (ctx, next) => {
   }
 
   await next();
+};
+
+exports.fetch = route => {
+  const params = exports.createParams();
+  const url = `${API_HOST}/${API_VERSION}/${API_ACCESS}/${route}`;
+
+  return axios.get(url, { params });
 };
 

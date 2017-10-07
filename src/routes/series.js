@@ -1,14 +1,11 @@
 const Router = require('koa-router');
-const axios = require('axios');
-const { createParams } = require('./../services/utils');
+const { fetch } = require('./../services/utils');
 
 const router = new Router();
 
 router
   .get('/series', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get('http://gateway.marvel.com/v1/public/series', { params });
+    const response = await fetch('/series');
 
     if (response.status !== 200) {
       ctx.throw(503);
@@ -17,9 +14,7 @@ router
     ctx.body = { data: response.data.data.results };
   })
   .get('/series/:id', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get(`http://gateway.marvel.com/v1/public/series/${ctx.params.id}`, { params });
+    const response = await fetch(`/series/${ctx.params.id}`);
 
     if (response.status !== 200) {
       ctx.throw(503);
@@ -28,9 +23,7 @@ router
     ctx.body = { data: response.data.data.results };
   })
   .get('/series/:id/characters', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get(`http://gateway.marvel.com/v1/public/series/${ctx.params.id}/characters`, { params });
+    const response = await fetch(`/series/${ctx.params.id}/characters`);
 
     if (response.status !== 200) {
       ctx.throw(503);
@@ -39,9 +32,7 @@ router
     ctx.body = { data: response.data.data.results };
   })
   .get('/series/:id/comics', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get(`http://gateway.marvel.com/v1/public/series/${ctx.params.id}/comics`, { params });
+    const response = await fetch(`/series/${ctx.params.id}/comics`);
 
     if (response.status !== 200) {
       ctx.throw(503);
@@ -50,9 +41,7 @@ router
     ctx.body = { data: response.data.data.results };
   })
   .get('/series/:id/creators', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get(`http://gateway.marvel.com/v1/public/series/${ctx.params.id}/creators`, { params });
+    const response = await fetch(`/series/${ctx.params.id}/creators`);
 
     if (response.status !== 200) {
       ctx.throw(503);
@@ -61,9 +50,7 @@ router
     ctx.body = { data: response.data.data.results };
   })
   .get('/series/:id/events', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get(`http://gateway.marvel.com/v1/public/series/${ctx.params.id}/events`, { params });
+    const response = await fetch(`/series/${ctx.params.id}/events`);
 
     if (response.status !== 200) {
       ctx.throw(503);
@@ -72,9 +59,7 @@ router
     ctx.body = { data: response.data.data.results };
   })
   .get('/series/:id/stories', async ctx => {
-    const params = createParams();
-
-    const response = await axios.get(`http://gateway.marvel.com/v1/public/series/${ctx.params.id}/stories`, { params });
+    const response = await fetch(`/series/${ctx.params.id}/stories`);
 
     if (response.status !== 200) {
       ctx.throw(503);
