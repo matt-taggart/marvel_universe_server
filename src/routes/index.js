@@ -30,5 +30,4 @@ const router = compose([
   storiesRouter.allowedMethods({ throw: true }),
 ]);
 
-
 module.exports = () => router;

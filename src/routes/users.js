@@ -20,7 +20,7 @@ router
 
     ctx.body = {
       id: user.id,
-      password: user.username,
+      username: user.username,
     };
   })
   .post('/users', async ctx => {
