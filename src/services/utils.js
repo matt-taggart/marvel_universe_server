@@ -47,3 +47,9 @@ exports.fetch = route => {
   return axios.get(url, { params });
 };
 
+exports.validateResponse = ({ status }, ctx) => {
+  if (status !== 200) {
+    ctx.throw(503);
+  }
+};
+
