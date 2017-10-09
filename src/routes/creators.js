@@ -5,42 +5,42 @@ const router = new Router();
 
 router
   .get('/creators', async ctx => {
-    const response = await fetch('/creators');
+    const response = await fetch('/creators', ctx.query);
 
     validateResponse(response, ctx);
 
     ctx.body = { data: response.data.data.results };
   })
   .get('/creators/:id', async ctx => {
-    const response = await fetch(`/creators/${ctx.params.id}`);
+    const response = await fetch(`/creators/${ctx.params.id}`, ctx.query);
 
     validateResponse(response, ctx);
 
     ctx.body = { data: response.data.data.results };
   })
   .get('/creators/:id/comics', async ctx => {
-    const response = await fetch(`/creators/${ctx.params.id}/comics`);
+    const response = await fetch(`/creators/${ctx.params.id}/comics`, ctx.query);
 
     validateResponse(response, ctx);
 
     ctx.body = { data: response.data.data.results };
   })
   .get('/creators/:id/events', async ctx => {
-    const response = await fetch(`/creators/${ctx.params.id}/events`);
+    const response = await fetch(`/creators/${ctx.params.id}/events`, ctx.query);
 
     validateResponse(response, ctx);
 
     ctx.body = { data: response.data.data.results };
   })
   .get('/creators/:id/series', async ctx => {
-    const response = await fetch(`/creators/${ctx.params.id}/series`);
+    const response = await fetch(`/creators/${ctx.params.id}/series`, ctx.query);
 
     validateResponse(response, ctx);
 
     ctx.body = { data: response.data.data.results };
   })
   .get('/creators/:id/stories', async ctx => {
-    const response = await fetch(`/creators/${ctx.params.id}/stories`);
+    const response = await fetch(`/creators/${ctx.params.id}/stories`, ctx.query);
 
     validateResponse(response, ctx);
 

@@ -40,8 +40,8 @@ exports.auth = async (ctx, next) => {
   await next();
 };
 
-exports.fetch = route => {
-  const params = exports.createParams();
+exports.fetch = (route, query = {}) => {
+  const params = Object.assign({}, exports.createParams(), query);
   const url = `${API_HOST}/${API_VERSION}/${API_ACCESS}/${route}`;
 
   return axios.get(url, { params });
