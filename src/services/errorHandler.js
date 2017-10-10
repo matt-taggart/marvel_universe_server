@@ -16,6 +16,7 @@ module.exports = () => (
       ctx.app.emit('error', e, ctx);
     }
     if (ctx.status === 404) {
+      ctx.status = 404;
       ctx.body = Boom.notFound().output.payload;
     }
   }

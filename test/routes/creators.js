@@ -3,7 +3,36 @@ const { assert } = require('chai');
 
 const agent = request.agent('http://localhost:3000');
 
-describe.only('Creator Endpoints', function() {
+describe('Creator Endpoints', function() {
+  it('Should return not found', function(done) {
+    agent.get('/creatorzzz')
+      .expect(404)
+      .end(function(err, response) {
+        if (err) return done(err);
+        assert.deepEqual(response.body, {
+          statusCode: 404,
+          error: 'Not Found',
+          message: 'Not Found',
+        });
+        done();
+      })
+  });
+
+  it('Should return method not allowed', function(done) {
+    agent
+      .post('/creators')
+      .expect(405)
+      .end(function(err, response) {
+        if (err) return done(err);
+        assert.deepEqual(response.body, {
+          statusCode: 405,
+          error: 'Method Not Allowed',
+          message: 'Method Not Allowed',
+        });
+        done();
+      });
+  });
+
   it('Should get all creators from Marvel API', function(done) {
     agent
       .get('/creators')
@@ -64,7 +93,7 @@ describe.only('Creator Endpoints', function() {
 
   it('Should get all events for an individual creator from Marvel API', function(done) {
     agent
-      .get('/creators/2289/series')
+      .get('/creators/4139/events')
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function(err, response) {
@@ -77,17 +106,15 @@ describe.only('Creator Endpoints', function() {
           'description',
           'resourceURI',
           'urls',
-          'startYear',
-          'endYear',
-          'rating',
-          'type',
           'modified',
+          'start',
+          'end',
           'thumbnail',
           'creators',
           'characters',
           'stories',
           'comics',
-          'events',
+          'series',
           'next',
           'previous'
         ]);
