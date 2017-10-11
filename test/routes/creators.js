@@ -4,35 +4,6 @@ const { assert } = require('chai');
 const agent = request.agent('http://localhost:3000');
 
 describe('Creator Endpoints', function() {
-  it('Should return not found', function(done) {
-    agent.get('/creatorzzz')
-      .expect(404)
-      .end(function(err, response) {
-        if (err) return done(err);
-        assert.deepEqual(response.body, {
-          statusCode: 404,
-          error: 'Not Found',
-          message: 'Not Found',
-        });
-        done();
-      })
-  });
-
-  it('Should return method not allowed', function(done) {
-    agent
-      .post('/creators')
-      .expect(405)
-      .end(function(err, response) {
-        if (err) return done(err);
-        assert.deepEqual(response.body, {
-          statusCode: 405,
-          error: 'Method Not Allowed',
-          message: 'Method Not Allowed',
-        });
-        done();
-      });
-  });
-
   it('Should get all creators from Marvel API', function(done) {
     agent
       .get('/creators')
