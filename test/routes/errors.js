@@ -15,7 +15,7 @@ describe('Test Endpoint Errors', function() {
         })
         done();
       })
-      .catch(done)
+      .catch(done);
   });
 
   it('Should return method not allowed', function(done) {
@@ -32,4 +32,4 @@ describe('Test Endpoint Errors', function() {
       })
       .catch(done);
   });
-})
+});

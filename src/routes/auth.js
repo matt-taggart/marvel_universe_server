@@ -35,7 +35,7 @@ router
   })
   .delete('/logout', async ctx => {
     if (!ctx.cookies.get('marvel-universe')) {
-      ctx.throw(400, 'User is already logged out')
+      ctx.throw(400, 'User is already logged out');
     }
 
     ctx.cookies.set('marvel-universe', null);
