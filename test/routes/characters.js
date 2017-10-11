@@ -7,30 +7,30 @@ describe('Character Endpoints', function() {
   it('Should return not found', function(done) {
     agent.get('/characterzzz')
       .expect(404)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         assert.deepEqual(response.body, {
           statusCode: 404,
           error: 'Not Found',
           message: 'Not Found',
-        });
+        })
         done();
       })
+      .catch(done)
   });
 
   it('Should return method not allowed', function(done) {
     agent
       .post('/characters')
       .expect(405)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         assert.deepEqual(response.body, {
           statusCode: 405,
           error: 'Method Not Allowed',
           message: 'Method Not Allowed',
         });
         done();
-      });
+      })
+      .catch(done);
   });
 
   it('Should get all characters from Marvel API', function(done) {
@@ -38,10 +38,8 @@ describe('Character Endpoints', function() {
       .get('/characters')
       .expect('Content-Type', /json/)
       .expect(200)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         const data = response.body.data;
-        assert.isArray(data);
         assert.containsAllKeys(data[0], [
           'id',
           'name',
@@ -56,7 +54,8 @@ describe('Character Endpoints', function() {
           'urls'
         ]);
         done();
-      });
+      })
+      .catch(done);
   });
 
   it('Should get individual character from Marvel API', function(done) {
@@ -64,10 +63,8 @@ describe('Character Endpoints', function() {
       .get('/characters/1011334')
       .expect('Content-Type', /json/)
       .expect(200)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         const data = response.body.data;
-        assert.isArray(data);
         assert.containsAllKeys(data[0], [
           'id',
           'name',
@@ -82,7 +79,8 @@ describe('Character Endpoints', function() {
           'urls'
         ]);
         done();
-      });
+      })
+      .catch(done);
   });
 
   it('Should get all comics for an individual character from Marvel API', function(done) {
@@ -90,10 +88,8 @@ describe('Character Endpoints', function() {
       .get('/characters/1011334/comics')
       .expect('Content-Type', /json/)
       .expect(200)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         const data = response.body.data;
-        assert.isArray(data);
         assert.containsAllKeys(data[0], [
           'id',
           'digitalId',
@@ -126,7 +122,7 @@ describe('Character Endpoints', function() {
           'events'
         ]);
         done();
-      });
+      }).catch(done);
   });
 
   it('Should get all events for an individual character from Marvel API', function(done) {
@@ -134,10 +130,8 @@ describe('Character Endpoints', function() {
       .get('/characters/1011334/events')
       .expect('Content-Type', /json/)
       .expect(200)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         const data = response.body.data;
-        assert.isArray(data);
         assert.containsAllKeys(data[0], [
           'id',
           'title',
@@ -157,7 +151,7 @@ describe('Character Endpoints', function() {
           'previous'
         ]);
         done();
-      });
+      }).catch(console.error);
   });
 
   it('Should get all series for an individual character from Marvel API', function(done) {
@@ -165,10 +159,8 @@ describe('Character Endpoints', function() {
       .get('/characters/1011334/series')
       .expect('Content-Type', /json/)
       .expect(200)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         const data = response.body.data;
-        assert.isArray(data);
         assert.containsAllKeys(data[0], [
           'id',
           'title',
@@ -190,7 +182,7 @@ describe('Character Endpoints', function() {
           'previous'
         ]);
         done();
-      });
+      }).catch(done);
   });
 
   it('Should get all stories for an individual character from Marvel API', function(done) {
@@ -198,10 +190,8 @@ describe('Character Endpoints', function() {
       .get('/characters/1011334/stories')
       .expect('Content-Type', /json/)
       .expect(200)
-      .end(function(err, response) {
-        if (err) return done(err);
+      .then(response => {
         const data = response.body.data;
-        assert.isArray(data);
         assert.containsAllKeys(data[0], [
           'id',
           'title',
@@ -218,6 +208,6 @@ describe('Character Endpoints', function() {
           'originalIssue'
         ]);
         done();
-      });
+      }).catch(done);
   });
 });
