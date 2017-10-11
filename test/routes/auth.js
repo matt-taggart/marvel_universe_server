@@ -14,6 +14,7 @@ describe('Authentication Routes', function() {
       .send({ username, password })
       .expect(200)
       .then(response => {
+        assert.property(response.body, 'id');        
         assert.equal(response.body.username, username);
         done();
       })
@@ -65,6 +66,7 @@ describe('Authentication Routes', function() {
       .expect(200)
       .expect('set-cookie', /marvel-universe/)
       .then(response => {
+        assert.property(response.body, 'id');        
         assert.equal(response.body.username, username);
         done();
       })
