@@ -1,5 +1,3 @@
-require('dotenv').load();
-
 const request = require('supertest');
 const { assert } = require('chai');
 const faker = require('faker');
