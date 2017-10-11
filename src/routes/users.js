@@ -46,6 +46,7 @@ router
       ctx.throw(400, 'Unable to add user');
     }
 
+    ctx.status = 201;
     ctx.body = {
       id: user.id,
       username: user.username,

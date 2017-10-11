@@ -12,7 +12,7 @@ describe('Authentication Routes', function() {
     agent
       .post('/users')
       .send({ username, password })
-      .expect(200)
+      .expect(201)
       .then(response => {
         assert.property(response.body, 'id');        
         assert.equal(response.body.username, username);
