@@ -3,7 +3,7 @@ const { assert } = require('chai');
 
 const agent = request.agent('http://localhost:3000');
 
-describe.only('Events Endpoints', function() {
+describe('Events Endpoints', function() {
   it('Should get all events from Marvel API', function(done) {
     agent
       .get('/events')
