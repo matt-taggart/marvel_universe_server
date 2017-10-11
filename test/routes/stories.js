@@ -31,6 +31,34 @@ describe('Stories Endpoints', function() {
       .catch(done);
   });
 
+  it('Should query results based on search', function(done) {
+    agent
+      .get('/stories?orderBy=modified')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(response => {
+        const data = response.body.data;
+        assert.equal(data[0].title, '[Ads]');
+        assert.containsAllKeys(data[0], [
+          'id',
+          'title',
+          'description',
+          'resourceURI',
+          'type',
+          'modified',
+          'thumbnail',
+          'creators',
+          'characters',
+          'series',
+          'comics',
+          'events',
+          'originalIssue'
+        ]);
+        done();
+      })
+      .catch(done);
+  });
+
   it('Should get individual story from Marvel API', function(done) {
     agent
       .get('/stories/19415')

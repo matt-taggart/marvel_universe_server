@@ -36,6 +36,39 @@ describe('Series Endpoints', function() {
       .catch(done);
   });
 
+  it('Should query results based on search', function(done) {
+    agent
+      .get('/series?titleStartsWith=spider')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(response => {
+        const data = response.body.data;
+        assert.equal(data[0].title, 'Spider-Girl (2010 - 2011)');
+        assert.containsAllKeys(data[0], [
+          'id',
+          'title',
+          'description',
+          'resourceURI',
+          'urls',
+          'startYear',
+          'endYear',
+          'rating',
+          'type',
+          'modified',
+          'thumbnail',
+          'creators',
+          'characters',
+          'stories',
+          'comics',
+          'events',
+          'next',
+          'previous'
+        ]);
+        done();
+      })
+      .catch(done);
+  });
+
   it('Should get individual series from Marvel API', function(done) {
     agent
       .get('/series/20018')

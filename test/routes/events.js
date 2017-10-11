@@ -34,6 +34,37 @@ describe('Events Endpoints', function() {
       .catch(done);
   });
 
+  it('Should query results based on search', function(done) {
+    agent
+      .get('/events?nameStartsWith=spider')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(response => {
+        const data = response.body.data;
+        assert.equal(data[0].title, 'Spider-Island');
+        assert.containsAllKeys(data[0], [
+          'id',
+          'title',
+          'description',
+          'resourceURI',
+          'urls',
+          'modified',
+          'start',
+          'end',
+          'thumbnail',
+          'creators',
+          'characters',
+          'stories',
+          'comics',
+          'series',
+          'next',
+          'previous'
+        ]);
+        done();
+      })
+      .catch(done);
+  });
+
   it('Should get individual event from Marvel API', function(done) {
     agent
       .get('/events/116')

@@ -32,6 +32,36 @@ describe('Creator Endpoints', function() {
       .catch(done);
   });
 
+  it('Should query results based on search', function(done) {
+    agent
+      .get('/creators?firstNameStartsWith=stan&lastNameStartsWith=goldberg')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(response => {
+        const data = response.body.data;
+        assert.equal(data[0].fullName, 'Stan Goldberg');
+        assert.containsAllKeys(data[0], [
+          'id',
+          'firstName',
+          'middleName',
+          'lastName',
+          'suffix',
+          'fullName',
+          'modified',
+          'thumbnail',
+          'resourceURI',
+          'comics',
+          'series',
+          'stories',
+          'events',
+          'urls'
+        ]);
+        done();
+      })
+      .catch(done);
+  });
+
+
   it('Should get individual creator from Marvel API', function(done) {
     agent
       .get('/creators/2289')

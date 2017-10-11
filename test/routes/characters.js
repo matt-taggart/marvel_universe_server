@@ -29,6 +29,32 @@ describe('Character Endpoints', function() {
       .catch(done);
   });
 
+  it('Should query results based on search', function(done) {
+    agent
+    .get('/characters?nameStartsWith=spider-man')
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .then(response => {
+      const data = response.body.data;
+      assert.equal(data[0].name, 'Spider-Man');      
+      assert.containsAllKeys(data[0], [
+        'id',
+        'name',
+        'description',
+        'modified',
+        'thumbnail',
+        'resourceURI',
+        'comics',
+        'series',
+        'stories',
+        'events',
+        'urls'
+      ]);
+      done();
+    })
+    .catch(done);
+  });
+
   it('Should get individual character from Marvel API', function(done) {
     agent
       .get('/characters/1011334')
