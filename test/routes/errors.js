@@ -3,7 +3,7 @@ const { assert } = require('chai');
 
 const agent = request.agent('http://localhost:3000');
 
-describe.only('Test Endpoint Errors', function() {
+describe('Test Endpoint Errors', function() {
   it('Should return not found', function(done) {
     agent.get('/characterzzz')
       .expect(404)
