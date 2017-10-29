@@ -10,7 +10,7 @@ router
     const { id } = ctx.params;
 
     const { rowCount, rows: [user] } = await db.query({
-      text: 'SELECT id, username FROM users WHERE id = ($1)',
+      text: 'SELECT id, email FROM users WHERE id = ($1)',
       values: [id],
     });
 
@@ -24,22 +24,22 @@ router
     };
   })
   .post('/users', async ctx => {
-    const { username, password } = ctx.request.body;
+    const { name, email, password, gender, age } = ctx.request.body;
 
     const { rows: [result] } = await db.query({
-      text: 'SELECT COUNT(username) FROM users WHERE username = ($1)',
-      values: [username],
+      text: 'SELECT COUNT(*) FROM users WHERE email = ($1)',
+      values: [email],
     });
 
     if (+result.count) {
-      ctx.throw(400, 'Username already exists');
+      ctx.throw(401, 'Username already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const { rowCount, rows: [user] } = await db.query({
-      text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username',
-      values: [username, hashedPassword],
+      text: 'INSERT INTO users (name, email, password, gender, age) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email',
+      values: [name, email, hashedPassword, gender, age],
     });
 
     if (!rowCount) {
@@ -49,7 +49,8 @@ router
     ctx.status = 201;
     ctx.body = {
       id: user.id,
-      username: user.username,
+      name: user.name,
+      email: user.email,
     };
   });
 
