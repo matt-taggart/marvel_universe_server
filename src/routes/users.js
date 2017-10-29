@@ -32,7 +32,7 @@ router
     });
 
     if (+result.count) {
-      ctx.throw(401, 'Username already exists');
+      ctx.throw(401, 'User already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
