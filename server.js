@@ -11,7 +11,9 @@ const app = new Koa();
 
 app
   .use(errorHandler())
-  .use(cors())
+  .use(cors({
+    credentials: true,
+  }))
   .use(bodyParser())
   .use(router());
 
