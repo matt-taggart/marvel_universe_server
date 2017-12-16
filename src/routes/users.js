@@ -1,16 +1,18 @@
 const Router = require('koa-router');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const db = require('./../db');
 const { auth } = require('./../services/utils');
 
 const router = new Router();
 
 router
-  .get('/users/:id', auth, async ctx => {
-    const { id } = ctx.params;
+  .get('/user', auth, async ctx => {
+    const token = ctx.cookies.get('marvel-universe');
+    const { id } = jwt.decode(token);
 
     const { rowCount, rows: [user] } = await db.query({
-      text: 'SELECT id, email FROM users WHERE id = ($1)',
+      text: 'SELECT * FROM users WHERE id = ($1)',
       values: [id],
     });
 
@@ -20,10 +22,13 @@ router
 
     ctx.body = {
       id: user.id,
-      username: user.username,
+      name: user.name,
+      email: user.email,
+      gender: user.gender,
+      age: user.age,
     };
   })
-  .post('/users', async ctx => {
+  .post('/user', async ctx => {
     const { name, email, password, gender, age } = ctx.request.body;
 
     const { rows: [result] } = await db.query({
