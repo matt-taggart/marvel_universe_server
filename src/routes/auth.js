@@ -32,6 +32,8 @@ router
       id: user.id,
       name: user.name,
       email: user.email,
+      gender: user.gender,
+      age: user.age,
     };
   })
   .delete('/logout', async ctx => {
