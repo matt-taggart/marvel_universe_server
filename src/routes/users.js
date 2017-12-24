@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { reduceBy } = require('ramda');
 const db = require('./../db');
 const { auth } = require('./../services/utils');
 
@@ -20,12 +21,22 @@ router
       ctx.throw(400, 'User does not exist');
     }
 
+    const { rows: savedDataRows } = await db.query({
+      text: 'SELECT resource_type, resource_id, name FROM saved_items WHERE user_id = ($1)',
+      values: [id],
+    });
+
+    const parseSavedData = reduceBy((acc, item) => acc.concat(
+      { id: item.resource_id, name: item.name }), []
+    )(item => item.resource_type);
+
     ctx.body = {
       id: user.id,
       name: user.name,
       email: user.email,
       gender: user.gender,
       age: user.age,
+      savedData: parseSavedData(savedDataRows),
     };
   })
   .post('/user', async ctx => {
@@ -62,12 +73,13 @@ router
   })
   .post('/user/:resourceType/:id', auth, async ctx => {
     const { resourceType, id } = ctx.params;
+    const { name } = ctx.request.body;    
     const token = ctx.cookies.get('marvel-universe');
     const { id: userId } = jwt.decode(token);
 
     const { rowCount, rows: [resource] } = await db.query({
-      text: 'INSERT INTO saved_items (resource_type, resource_id, user_id) VALUES ($1, $2, $3) RETURNING resource_type, resource_id',
-      values: [resourceType, id, userId],
+      text: 'INSERT INTO saved_items (resource_type, resource_id, user_id, name) VALUES ($1, $2, $3, $4) RETURNING resource_type, resource_id',
+      values: [resourceType, id, userId, name],
     });
 
     if (!rowCount) {
