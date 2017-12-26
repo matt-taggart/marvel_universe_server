@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { reduceBy } = require('ramda');
 const db = require('./../db');
 
 const router = new Router();
@@ -17,12 +18,21 @@ router
     if (!rowCount) {
       ctx.throw(401, 'Invalid email or password provided');
     }
-
+    
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
       ctx.throw(401, 'Invalid email or password provided');
     }
+
+    const { rows: savedDataRows } = await db.query({
+      text: 'SELECT resource_type, resource_id, name FROM saved_items WHERE user_id = ($1)',
+      values: [user.id],
+    });
+
+    const parseSavedData = reduceBy((acc, item) => acc.concat(
+      { id: item.resource_id, name: item.name }), []
+    )(item => item.resource_type);
 
     const token = jwt.sign({ id: user.id, email: user.email }, 'secretsauce');
 
@@ -34,6 +44,7 @@ router
       email: user.email,
       gender: user.gender,
       age: user.age,
+      savedData: parseSavedData(savedDataRows),
     };
   })
   .delete('/logout', async ctx => {
