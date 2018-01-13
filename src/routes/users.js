@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { reduceBy } = require('ramda');
 const db = require('./../db');
