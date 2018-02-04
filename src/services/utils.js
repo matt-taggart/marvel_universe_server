@@ -41,7 +41,7 @@ exports.auth = async (ctx, next) => {
 };
 
 exports.fetch = (route, query = {}) => {
-  const params = Object.assign({}, exports.createParams(), query);
+  const params = Object.assign({}, exports.createParams(), { limit: 50 }, query);
   const url = `${API_HOST}/${API_VERSION}/${API_ACCESS}/${route}`;
 
   return axios.get(url, { params });
@@ -51,5 +51,15 @@ exports.validateResponse = ({ status }, ctx) => {
   if (status !== 200) {
     ctx.throw(503);
   }
+};
+
+exports.parseResponse = (response, ctx) => {
+  const { total, count, data: { results } } = response.data;
+
+  ctx.body = {
+    data: results,
+    total,
+    count,
+  };
 };
 
