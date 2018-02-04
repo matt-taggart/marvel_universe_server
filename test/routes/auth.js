@@ -1,8 +1,9 @@
 const request = require('supertest');
 const { assert } = require('chai');
 const faker = require('faker');
+const { HOST_URL } = process.env;
 
-const agent = request.agent('http://192.168.99.100:3000');
+const agent = request.agent(HOST_URL);
 
 const username = faker.internet.userName();
 const password = faker.internet.password();
