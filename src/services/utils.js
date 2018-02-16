@@ -54,7 +54,7 @@ exports.validateResponse = ({ status }, ctx) => {
 };
 
 exports.parseResponse = (response, ctx) => {
-  const { total, count, data: { results } } = response.data;
+  const { data: { total, count, results } } = response.data;
 
   ctx.body = {
     data: results,
