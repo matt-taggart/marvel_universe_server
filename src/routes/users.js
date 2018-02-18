@@ -73,7 +73,7 @@ router
   })
   .post('/user/:resourceType/:id', auth, async ctx => {
     const { resourceType, id } = ctx.params;
-    const { name } = ctx.request.body;    
+    const { name } = ctx.request.body;
     const token = ctx.cookies.get('marvel-universe');
     const { id: userId } = jwt.decode(token);
 

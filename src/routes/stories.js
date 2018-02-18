@@ -1,5 +1,9 @@
 const Router = require('koa-router');
-const { fetch, validateResponse } = require('./../services/utils');
+const {
+  fetch,
+  validateResponse,
+  parseResponse,
+} = require('./../services/utils');
 
 const router = new Router();
 
