@@ -49,7 +49,7 @@ Start up server:
 
 ## Running Tests
 
-This project uses Mocha, Chai and Supertest for integration testing.  To run the entire test suite, you can use the commad `npm test`.
+This project uses Mocha, Chai and Supertest for integration testing.  To run the entire test suite, you can use the command `yarn test`.
 
 ## Built With
 
