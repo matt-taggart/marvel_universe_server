@@ -62,23 +62,23 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Login
 
-* URL
+* **URL**
 
   `/login`
 
-* Method
+* **Method**
 
   `POST`
   
-* URL Params
+* **URL Params**
 
   None
 
-* Query Params
+* **Query Params**
 
   None
   
-* Request Body
+* **Request Body**
 
   ```
   {
@@ -87,7 +87,7 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
   }
   ```
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
@@ -106,7 +106,7 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
     }
     ```
 
-* Error Response
+* **Error Response**
 
   * Code:  401
 
@@ -122,33 +122,33 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Logout
 
-* URL
+* **URL**
 
   `/logout`
 
-* Method
+* **Method**
 
   `DELETE`
   
-* URL Params
+* **URL Params**
 
   None
 
-* Query Params
+* **Query Params**
 
   None
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  204
 
   * Response: None
 
-* Error Response
+* **Error Response**
 
   * Code:  400
 
@@ -164,27 +164,27 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Get User
 
-* URL
+* **URL**
 
   `/users`
 
-* Method
+* **Method**
 
   `GET`
   
-* URL Params
+* **URL Params**
 
   None
 
-* Query Params
+* **Query Params**
 
   None
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
@@ -203,7 +203,7 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
     }
     ```
 
-* Error Response
+* **Error Response**
 
   * Code:  401
 
@@ -219,23 +219,23 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Create User
 
-* URL
+* **URL**
 
   `/users`
 
-* Method
+* **Method**
 
   `POST`
   
-* URL Params
+* **URL Params**
 
   None
 
-* Query Params
+* **Query Params**
 
   None
   
-* Request Body
+* **Request Body**
     ```
     {
       "name": "Stan Lee",
@@ -246,7 +246,7 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
     }
     ```
 
-* Success Response
+* **Success Response**
 
   * Code:  201
 
@@ -265,7 +265,7 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
     }
     ```
 
-* Error Response
+* **Error Response**
 
   * Code:  401
 
@@ -281,30 +281,30 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Save User Resource
 
-* URL
+* **URL**
 
   `/users/:resourceType/:id`
 
-* Method
+* **Method**
 
   `POST`
   
-* URL Params
+* **URL Params**
 
 
   `:resourceType` => Type of resource saved (i.e. character, comic, etc.)
 
   `:id` => Unique resource identifier of item to save
 
-* Query Params
+* **Query Params**
 
   None
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  201
 
@@ -316,7 +316,7 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
     }
     ```
 
-* Error Response
+* **Error Response**
 
   * Code:  400
 
@@ -332,33 +332,33 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Get Characters
 
-* URL
+* **URL**
 
   `/characters`
 
-* Method
+* **Method**
 
   `GET`
   
-* URL Params
+* **URL Params**
 
   None
 
-* Query Params
+* **Query Params**
 
   See developer.marvel.com for details
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
   * Response: See developer.marvel.com for details
 
-* Error Response
+* **Error Response**
 
   * Code:  200
 
@@ -374,33 +374,33 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Get Characters By ID
 
-* URL
+* **URL**
 
   `/characters/:id`
 
-* Method
+* **Method**
 
   `GET`
   
-* URL Params
+* **URL Params**
 
   `:id` => Unique resource identifier of character
 
-* Query Params
+* **Query Params**
 
   See Marvel API Docs
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
   * Response: See developer.marvel.com for details
 
-* Error Response
+* **Error Response**
 
   * Code:  200
 
@@ -416,33 +416,33 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Get Character Comics By ID
 
-* URL
+* **URL**
 
   `/characters/:id/comics`
 
-* Method
+* **Method**
 
   `GET`
   
-* URL Params
+* **URL Params**
 
   `:id` => Unique resource identifier of character
 
-* Query Params
+* **Query Params**
 
   See Marvel API Docs
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
   * Response: See developer.marvel.com for details
 
-* Error Response
+* **Error Response**
 
   * Code:  200
 
@@ -458,33 +458,33 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Get Character Series By ID
 
-* URL
+* **URL**
 
   `/characters/:id/series`
 
-* Method
+* **Method**
 
   `GET`
   
-* URL Params
+* **URL Params**
 
   `:id` => Unique resource identifier of character
 
-* Query Params
+* **Query Params**
 
   See Marvel API Docs
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
   * Response: See developer.marvel.com for details
 
-* Error Response
+* **Error Response**
 
   * Code:  200
 
@@ -500,33 +500,33 @@ This project uses Mocha, Chai and Supertest for integration testing.  To run the
 
 ### Get Character Events By ID
 
-* URL
+* **URL**
 
   `/characters/:id/events`
 
-* Method
+* **Method**
 
   `GET`
   
-* URL Params
+* **URL Params**
 
   `:id` => Unique resource identifier of character
 
-* Query Params
+* **Query Params**
 
   See Marvel API Docs
   
-* Request Body
+* **Request Body**
 
   None
 
-* Success Response
+* **Success Response**
 
   * Code:  200
 
   * Response: See developer.marvel.com for details
 
-* Error Response
+* **Error Response**
 
   * Code:  200
 
